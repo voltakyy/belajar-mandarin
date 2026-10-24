@@ -2,6 +2,8 @@
 
 Web belajar Mandarin **satu halaman** untuk pemula: 90 kartu frasa inti, **1.000 kalimat HSK 1–3**, pinyin berwarna nada, audio, spaced repetition, dan latihan listening.
 
+**Live demo:** [voltakyy.github.io/belajar-mandarin](https://voltakyy.github.io/belajar-mandarin/)
+
 > 万事开头难，坚持就是胜利
 > *Permulaan itu sulit; konsistenlah dan kamu menang.*
 
@@ -22,7 +24,7 @@ Web belajar Mandarin **satu halaman** untuk pemula: 90 kartu frasa inti, **1.000
 
 ## Cara pakai
 
-1. Unduh/clone repo ini.
+1. Buka **live demo** di atas, atau unduh/clone repo ini.
 2. Buka `index.html` di **Chrome** atau **Edge** (disarankan untuk suara Mandarin).
 3. Di tab **Pengaturan**, klik **Contoh** untuk memastikan suara `zh-CN` aktif.
 4. Mulai dari tab **Percakapan**, lalu kerjakan **Kuis SRS** 10–15 menit per hari.
