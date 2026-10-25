@@ -69,8 +69,14 @@ function zhHTML(text){
   return segs.map(s => {
     if(!s.w) return `<span class="p">${s.t.replace(/ /g, "&nbsp;")}</span>`;
     const cls = "c" + ((wi++ % 5) + 1);
-    return `<span class="w ${cls}">${s.t}</span>`;
+    const chars = [...s.t].map(ch => `<span class="hz-char" data-char="${ch}" title="Aksara: ${ch}">${ch}</span>`).join("");
+    return `<span class="w ${cls}" data-word="${s.t}" title="Kata: ${s.t}">${chars}</span>`;
   }).join("");
+}
+
+function formatHanziInText(str){
+  if(!str) return "";
+  return str.replace(/[\u3400-\u9fff]+/g, m => `<span class="zh inline-zh">${zhHTML(m)}</span>`);
 }
 
 /* ============================================================
@@ -142,13 +148,72 @@ function speakWords(zhEl, startEl){
   };
   next();
 }
-/* klik aksara mana pun (kartu, dialog, kuis) → baca per kata */
-document.addEventListener("click", e=>{
-  const zh = e.target.closest(".zh");
-  if(!zh) return;
-  e.stopPropagation();
+/* ============================================================
+   KLIK AKSARA PER HURUF & PER KATA DI SELURUH APLIKASI
+   ============================================================ */
+document.addEventListener("click", e => {
+  // 1. Abaikan elemen input teks / textarea
+  if(e.target.closest("input, select, textarea")) return;
+
+  // 2. Jika klik tepat di aksara per huruf (.hz-char)
+  const hzChar = e.target.closest(".hz-char");
+  if(hzChar){
+    e.stopPropagation();
+    clearReadHighlight();
+    hzChar.classList.add("reading");
+    const ch = hzChar.dataset.char || hzChar.textContent.trim();
+    speakToken(ch, () => {
+      setTimeout(() => hzChar.classList.remove("reading"), 400);
+    });
+    return;
+  }
+
+  // 3. Jika klik kata (.w)
   const word = e.target.closest(".w");
-  speakWords(zh, word);
+  if(word){
+    e.stopPropagation();
+    clearReadHighlight();
+    word.classList.add("reading");
+    const w = word.dataset.word || word.textContent.trim();
+    speakToken(w, () => {
+      setTimeout(() => word.classList.remove("reading"), 450);
+    });
+    return;
+  }
+
+  // 4. Jika klik kepingan kata (.word-chip) di latihan produktif
+  const chip = e.target.closest(".word-chip");
+  if(chip && /[\u3400-\u9fff]/.test(chip.textContent)){
+    speakToken(chip.textContent.trim());
+  }
+
+  // 5. Jika klik tombol opsi di pilihan ganda yang ada Hanzi
+  const optBtn = e.target.closest(".cloze-opt-btn, .gram-opt-btn");
+  if(optBtn && /[\u3400-\u9fff]/.test(optBtn.textContent)){
+    const match = optBtn.textContent.match(/[\u3400-\u9fff]+/);
+    if(match) speakToken(match[0]);
+  }
+
+  // 6. Universal Fallback: klik teks Mandarin apapun yang beraksara
+  const hanziTarget = e.target.closest(".hanzi-speak, .big");
+  if(hanziTarget && /[\u3400-\u9fff]/.test(hanziTarget.textContent)){
+    const match = hanziTarget.textContent.match(/[\u3400-\u9fff]+/);
+    if(match){
+      e.stopPropagation();
+      hanziTarget.classList.add("reading");
+      speakToken(match[0], () => {
+        setTimeout(() => hanziTarget.classList.remove("reading"), 450);
+      });
+      return;
+    }
+  }
+
+  // 7. Jika klik bubble/area kalimat (.zh) tapi bukan per huruf spesifik
+  const zh = e.target.closest(".zh");
+  if(zh && !e.target.closest(".btns, button")){
+    e.stopPropagation();
+    speakWords(zh);
+  }
 }, true);
 
 /* ============================================================
@@ -754,7 +819,7 @@ function renderGrammar(){
     // Points list
     const pointsHTML = rule.points && rule.points.length ? `
       <ul class="gram-points">
-        ${rule.points.map(pt => `<li>${pt}</li>`).join('')}
+        ${rule.points.map(pt => `<li>${formatHanziInText(pt)}</li>`).join('')}
       </ul>
     ` : '';
 
@@ -762,7 +827,7 @@ function renderGrammar(){
     const examplesHTML = rule.examples.map(ex => `
       <div class="gram-example-row">
         <div class="gram-example-text">
-          <div class="gram-ex-zh">${tonePinyinHTML ? zhHTML(ex.zh) : ex.zh}</div>
+          <div class="zh gram-ex-zh" style="font-size:18px">${zhHTML(ex.zh)}</div>
           <div class="gram-ex-py">${tonePinyinHTML(ex.py)}</div>
           <div class="gram-ex-id">${ex.id}</div>
         </div>
@@ -776,10 +841,10 @@ function renderGrammar(){
         <div class="gram-examples-title">✍️ Uji Pemahaman Cepat</div>
         ${rule.quiz.map((qz, qIdx) => `
           <div style="margin-top:10px">
-            <div class="gram-quiz-q">${qIdx + 1}. ${qz.q}</div>
+            <div class="gram-quiz-q">${qIdx + 1}. ${formatHanziInText(qz.q)}</div>
             <div class="gram-opts-grid">
               ${qz.opts.map((opt, optIdx) => `
-                <button class="gram-opt-btn" id="gbtn_${rule.id}_${qIdx}_${optIdx}" onclick="answerGrammarQuiz('${rule.id}', ${qIdx}, ${optIdx})">${opt}</button>
+                <button class="gram-opt-btn" id="gbtn_${rule.id}_${qIdx}_${optIdx}" onclick="answerGrammarQuiz('${rule.id}', ${qIdx}, ${optIdx})">${formatHanziInText(opt)}</button>
               `).join('')}
             </div>
             <div class="gram-quiz-feedback" id="gfb_${rule.id}_${qIdx}"></div>
@@ -794,7 +859,7 @@ function renderGrammar(){
           <h3 class="gram-title">${rule.title}</h3>
           <span class="gram-badge ${badgeClass}">${rule.level}</span>
         </div>
-        <div class="gram-formula">📝 Pola: ${rule.formula}</div>
+        <div class="gram-formula">📝 Pola: ${formatHanziInText(rule.formula)}</div>
         <div class="gram-desc">${rule.desc}</div>
         ${pointsHTML}
         <div class="gram-examples-title">💡 Contoh Penggunaan Nyata</div>
@@ -973,7 +1038,7 @@ function checkScramble(){
     fb.className = 'practice-feedback show-success';
     fb.innerHTML = `
       <div class="practice-rationale-title">🎉 Benar Sekali! Kalimat Sempurna:</div>
-      <div style="font-size:18px;font-family:var(--cjk);color:#FFF;margin:4px 0">${item.zh}</div>
+      <div class="zh" style="font-size:22px;margin:8px 0">${zhHTML(item.zh)}</div>
       <div style="font-size:13px;color:var(--warm);margin-bottom:8px">${tonePinyinHTML(item.py)}</div>
       <div class="practice-rationale-body">💡 <b>Aturan Tata Bahasa:</b> ${item.tip}</div>
       <div style="margin-top:14px;display:flex;gap:10px">
@@ -1020,7 +1085,7 @@ function renderClozeMode(container){
       </div>
 
       <div class="cloze-sentence-card">
-        <div class="cloze-zh">${formattedPrompt}</div>
+        <div class="zh cloze-zh" style="font-size:24px">${zhHTML(item.prompt).replace("___", '<span class="cloze-blank" id="clozeBlankSpot">___</span>')}</div>
         <div class="cloze-py">${tonePinyinHTML(item.pinyin)}</div>
         <div class="cloze-id">${item.id_trans}</div>
       </div>
@@ -1173,7 +1238,7 @@ function checkDictation(){
     fb.className = 'practice-feedback show-success';
     fb.innerHTML = `
       <div class="practice-rationale-title">🎉 Dikte Sempurna! Pendengaranmu Sangat Tajam:</div>
-      <div style="font-size:20px;font-family:var(--cjk);color:#FFF;margin:4px 0">${item.zh}</div>
+      <div class="zh" style="font-size:22px;margin:8px 0">${zhHTML(item.zh)}</div>
       <div style="font-size:13.5px;color:var(--warm);margin-bottom:6px">${tonePinyinHTML(item.py)}</div>
       <div style="font-size:14px;color:#D3E3FD">🇮🇩 "${item.id_trans}"</div>
       <div style="margin-top:14px;display:flex;gap:10px">
