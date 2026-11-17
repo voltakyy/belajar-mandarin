@@ -814,6 +814,10 @@ function renderGrammar(){
   const container = document.getElementById('grammarList');
   if(!container) return;
 
+  document.querySelectorAll('#grammarLevels button').forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.dataset.lvl === curGrammarLevel ? 'true' : 'false');
+  });
+
   const q = grammarQuery.toLowerCase().trim();
   const filtered = GRAMMAR_RULES.filter(r => {
     const matchLevel = (curGrammarLevel === 'all') ||
@@ -1342,6 +1346,7 @@ function setGrammarFilter(lvl){
   curGrammarLevel = lvl;
   document.querySelectorAll("#grammarLevels button").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.lvl === lvl);
+    btn.setAttribute("aria-pressed", btn.dataset.lvl === lvl ? "true" : "false");
   });
   renderGrammar();
 }
