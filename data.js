@@ -195,8 +195,6 @@ const DIALOGS = [
  ["A","太好了，谢谢你！","Tài hǎo le, xièxie nǐ!","Bagus, terima kasih!"],
  ["B","不客气，再见！","Bú kèqi, zàijiàn!","Sama-sama, sampai jumpa!"],
 ]},
-
-,
 {title:"🎓 Pendaftaran Kuliah & Asrama (选课与新生报到)", lines:[
  ["A","学长你好！我是新来的留学生，请问留学生办公室在哪儿？","Xuézhǎng nǐ hǎo! Wǒ shì xīn lái de liúxuéshēng, qǐngwèn liúxuéshēng bàngōngshì zài nǎr?","Halo Kak! Saya mahasiswa internasional baru, permisi di mana kantor mahasiswa internasional?"],
  ["B","你好！欢迎来到我们大学！办公室在三号教学楼二楼。","Nǐ hǎo! Huānyíng lái dào wǒmen dàxué! Bàngōngshì zài sān hào jiàoxuélóu èr lóu.","Halo! Selamat datang di universitas kami! Kantornya di lantai 2 gedung kuliah 3."],
