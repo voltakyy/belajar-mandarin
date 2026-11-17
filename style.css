@@ -854,3 +854,15 @@ summary:focus-visible,
   .hanzi-speak:hover,
   .zh .hz-char:hover{transform:none}
 }
+
+/* Di ponsel, tab nav tersembunyi di luar layar membuat pengguna tidak tahu
+   masih ada 6 tab lain. Ubah menjadi grid 3x3 yang seluruhnya terlihat. */
+@media (max-width:640px){
+  /* Judul utama sempat pecah menjadi "WoXue · 我" + "学" karena lebih
+     lebar 3px dari layar. Ukuran fluid + nowrap menjaga satu baris. */
+  .logo{
+    font-size:clamp(30px,10.5vw,46px);
+    letter-spacing:0;
+    white-space:nowrap;
+  }
+}
