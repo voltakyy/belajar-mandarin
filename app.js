@@ -109,9 +109,9 @@ function speak(text, rate){
    Baca per kata (klik aksara) dengan sorotan berjalan
    ============================================================ */
 function clearReadHighlight(){
-  document.querySelectorAll(".zh .w.reading").forEach(w=>w.classList.remove("reading"));
+  document.querySelectorAll(".reading").forEach(w=>w.classList.remove("reading"));
 }
-function speakToken(text, done){
+function speakToken(text, done = () => {}){
   try{
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "zh-CN";
