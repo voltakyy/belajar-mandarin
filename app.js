@@ -872,7 +872,7 @@ function renderGrammar(){
                 <button class="gram-opt-btn" id="gbtn_${rule.id}_${qIdx}_${optIdx}" onclick="answerGrammarQuiz('${rule.id}', ${qIdx}, ${optIdx})">${formatHanziInText(opt)}</button>
               `).join('')}
             </div>
-            <div class="gram-quiz-feedback" id="gfb_${rule.id}_${qIdx}"></div>
+            <div class="gram-quiz-feedback" id="gfb_${rule.id}_${qIdx}" aria-live="polite"></div>
           </div>
         `).join('')}
       </div>
@@ -1026,7 +1026,7 @@ function renderScrambleMode(container){
         <button class="practice-btn primary" onclick="checkScramble()">✅ Periksa Susunan</button>
       </div>
 
-      <div class="practice-feedback" id="scrambleFeedback"></div>
+      <div class="practice-feedback" id="scrambleFeedback" aria-live="polite"></div>
     </div>
   `;
 }
@@ -1125,7 +1125,7 @@ function renderClozeMode(container){
         ${optionsHTML}
       </div>
 
-      <div class="practice-feedback" id="clozeFeedback"></div>
+      <div class="practice-feedback" id="clozeFeedback" aria-live="polite"></div>
     </div>
   `;
 }
