@@ -817,8 +817,11 @@
   box-shadow:0 0 10px rgba(229,161,68,0.7)!important;
 }
 .inline-zh{
-  display:inline-block;vertical-align:baseline;
+  display:inline;font-size:1em;line-height:inherit;letter-spacing:0;
+  vertical-align:baseline;
 }
+/* Di dalam kartu besar, hanzi inline tetap mengikuti ukuran teks induknya. */
+body.hanzi-large .inline-zh{font-size:1em;line-height:inherit}
 .hanzi-speak{
   cursor:pointer;transition:.15s;
 }
