@@ -762,13 +762,19 @@ function applySettings(){
   document.body.classList.toggle("hanzi-large", settings.size === "l");
   document.body.classList.toggle("no-tone", settings.tone === "off");
   document.querySelectorAll("#speedOpts button").forEach(b=>{
-    b.classList.toggle("active", parseFloat(b.dataset.rate) === settings.rate);
+    const on = parseFloat(b.dataset.rate) === settings.rate;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
   });
   document.querySelectorAll("#sizeOpts button").forEach(b=>{
-    b.classList.toggle("active", b.dataset.size === settings.size);
+    const on = b.dataset.size === settings.size;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
   });
   document.querySelectorAll("#toneOpts button").forEach(b=>{
-    b.classList.toggle("active", b.dataset.tone === settings.tone);
+    const on = b.dataset.tone === settings.tone;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", on ? "true" : "false");
   });
 }
 document.querySelectorAll("#speedOpts button").forEach(b=>{
