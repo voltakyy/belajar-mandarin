@@ -155,9 +155,15 @@ document.addEventListener("click", e => {
   // 1. Abaikan elemen input teks / textarea
   if(e.target.closest("input, select, textarea")) return;
 
+  // Elemen yang punya aksi sendiri (tombol/link) harus menang. Tanpa ini,
+  // klik aksara di dalam tombol jawaban akan dibajak untuk audio sehingga
+  // jawaban kuis tidak pernah terpilih.
+  const inControl = !!e.target.closest("button, a, summary, label");
+
   // 2. Jika klik tepat di aksara per huruf (.hz-char)
   const hzChar = e.target.closest(".hz-char");
   if(hzChar){
+    if(inControl) return;
     e.stopPropagation();
     clearReadHighlight();
     hzChar.classList.add("reading");
@@ -171,6 +177,7 @@ document.addEventListener("click", e => {
   // 3. Jika klik kata (.w)
   const word = e.target.closest(".w");
   if(word){
+    if(inControl) return;
     e.stopPropagation();
     clearReadHighlight();
     word.classList.add("reading");
@@ -196,7 +203,7 @@ document.addEventListener("click", e => {
 
   // 6. Universal Fallback: klik teks Mandarin apapun yang beraksara
   const hanziTarget = e.target.closest(".hanzi-speak, .big");
-  if(hanziTarget && /[\u3400-\u9fff]/.test(hanziTarget.textContent)){
+  if(hanziTarget && !inControl && /[\u3400-\u9fff]/.test(hanziTarget.textContent)){
     const match = hanziTarget.textContent.match(/[\u3400-\u9fff]+/);
     if(match){
       e.stopPropagation();
@@ -210,7 +217,7 @@ document.addEventListener("click", e => {
 
   // 7. Jika klik bubble/area kalimat (.zh) tapi bukan per huruf spesifik
   const zh = e.target.closest(".zh");
-  if(zh && !e.target.closest(".btns, button")){
+  if(zh && !inControl && !e.target.closest(".btns, button")){
     e.stopPropagation();
     speakWords(zh);
   }
