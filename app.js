@@ -1310,22 +1310,45 @@ function nextDictation(){
 
 
 /* ===== Tabs Routing ===== */
-document.querySelectorAll("nav button").forEach(b => {
-  b.onclick = () => {
-    document.querySelectorAll("nav button").forEach(x => x.classList.remove("active"));
-    b.classList.add("active");
-    document.querySelectorAll("section.panel").forEach(s => s.classList.remove("show"));
-    const targetSection = document.getElementById("tab-" + b.dataset.tab);
-    if(targetSection) targetSection.classList.add("show");
-    
-    if(b.dataset.tab === "quiz" && !quizStarted) buildQuiz();
-    if(b.dataset.tab === "hsk"){ renderHskPage(); renderHskBank(); }
-    if(b.dataset.tab === "grammar"){ renderGrammar(); }
-    if(b.dataset.tab === "practice"){ initPracticeHub(); }
-    
-    try{ speechSynthesis.cancel(); readSession++; clearReadHighlight(); }catch(e){}
-    window.scrollTo({top:0});
-  };
+const navButtons = Array.from(document.querySelectorAll("nav button"));
+
+function activateTab(b){
+  navButtons.forEach(x => {
+    const on = x === b;
+    x.classList.toggle("active", on);
+    x.setAttribute("aria-selected", on ? "true" : "false");
+    // Roving tabindex: satu tab fokusabel, sisanya dijangkau dengan panah.
+    x.tabIndex = on ? 0 : -1;
+  });
+  document.querySelectorAll("section.panel").forEach(s => s.classList.remove("show"));
+  const targetSection = document.getElementById("tab-" + b.dataset.tab);
+  if(targetSection) targetSection.classList.add("show");
+
+  if(b.dataset.tab === "quiz" && !quizStarted) buildQuiz();
+  if(b.dataset.tab === "hsk"){ renderHskPage(); renderHskBank(); }
+  if(b.dataset.tab === "grammar"){ renderGrammar(); }
+  if(b.dataset.tab === "practice"){ initPracticeHub(); }
+
+  try{ speechSynthesis.cancel(); readSession++; clearReadHighlight(); }catch(e){}
+  window.scrollTo({top:0});
+}
+
+navButtons.forEach((b, i) => {
+  b.tabIndex = b.classList.contains("active") ? 0 : -1;
+  b.onclick = () => activateTab(b);
+
+  // Pola tab ARIA: panah kiri/kanan, Home, dan End memindahkan fokus + tab.
+  b.addEventListener("keydown", e => {
+    let next = null;
+    if(e.key === "ArrowRight") next = navButtons[(i + 1) % navButtons.length];
+    else if(e.key === "ArrowLeft") next = navButtons[(i - 1 + navButtons.length) % navButtons.length];
+    else if(e.key === "Home") next = navButtons[0];
+    else if(e.key === "End") next = navButtons[navButtons.length - 1];
+    if(!next) return;
+    e.preventDefault();
+    next.focus();
+    activateTab(next);
+  });
 });
 
 /* ===== Search ===== */
