@@ -268,6 +268,7 @@ function renderCats(){
     const c = document.createElement("button");
     c.textContent = `${label} ${done}/${seen}`;
     c.className = key===curCat ? "catbtn active" : "catbtn";
+    c.setAttribute("aria-pressed", key===curCat ? "true" : "false");
     c.onclick = ()=>{curCat=key;renderCats();renderPhrases();};
     el.appendChild(c);
   };
