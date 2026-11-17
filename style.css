@@ -197,6 +197,17 @@
   table.pinyin td{color:#C9D2E4;line-height:1.55}
   table.pinyin td:first-child{color:var(--cream);font-weight:700;white-space:nowrap}
   table.pinyin td:nth-child(2){color:var(--warm)}
+  /* Hanzi contoh di dalam tabel mengikuti ukuran sel, bukan 34px milik .zh. */
+  table.pinyin .zh{font-size:1em;line-height:1.6;letter-spacing:0}
+  /* Tabel lebar digulir di dalam wadahnya sendiri agar halaman tidak melebar. */
+  .table-wrap{
+    width:100%;overflow-x:auto;overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;scrollbar-color:var(--warm) var(--line-soft);
+  }
+  .table-wrap::-webkit-scrollbar{height:6px}
+  .table-wrap::-webkit-scrollbar-track{background:var(--line-soft);border-radius:3px}
+  .table-wrap::-webkit-scrollbar-thumb{background:var(--warm);border-radius:3px}
 
   /* ===== DIALOG ===== */
   .dialog{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:20px 20px 22px;margin:20px 0}
