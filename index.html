@@ -24,20 +24,20 @@
   </header>
 
   <!-- ===== NAV ===== -->
-  <nav role="tablist">
-    <button data-tab="phrases" class="active" role="tab" aria-selected="true">Percakapan</button>
-    <button data-tab="dialog" role="tab" aria-selected="false">Dialog (10)</button>
-    <button data-tab="grammar" role="tab" aria-selected="false">Tata Bahasa (20)</button>
-    <button data-tab="practice" role="tab" aria-selected="false">Latihan Produktif</button>
-    <button data-tab="quiz" role="tab" aria-selected="false">Kuis SRS</button>
-    <button data-tab="hsk" role="tab" aria-selected="false">HSK · 1000</button>
-    <button data-tab="tones" role="tab" aria-selected="false">Nada &amp; Pinyin</button>
-    <button data-tab="tips" role="tab" aria-selected="false">Metode</button>
-    <button data-tab="settings" role="tab" aria-selected="false">Pengaturan</button>
+  <nav role="tablist" aria-label="Bagian belajar">
+    <button data-tab="phrases" id="tabbtn-phrases" aria-controls="tab-phrases" class="active" role="tab" aria-selected="true">Percakapan</button>
+    <button data-tab="dialog" id="tabbtn-dialog" aria-controls="tab-dialog" role="tab" aria-selected="false">Dialog (10)</button>
+    <button data-tab="grammar" id="tabbtn-grammar" aria-controls="tab-grammar" role="tab" aria-selected="false">Tata Bahasa (20)</button>
+    <button data-tab="practice" id="tabbtn-practice" aria-controls="tab-practice" role="tab" aria-selected="false">Latihan Produktif</button>
+    <button data-tab="quiz" id="tabbtn-quiz" aria-controls="tab-quiz" role="tab" aria-selected="false">Kuis SRS</button>
+    <button data-tab="hsk" id="tabbtn-hsk" aria-controls="tab-hsk" role="tab" aria-selected="false">HSK · 1000</button>
+    <button data-tab="tones" id="tabbtn-tones" aria-controls="tab-tones" role="tab" aria-selected="false">Nada &amp; Pinyin</button>
+    <button data-tab="tips" id="tabbtn-tips" aria-controls="tab-tips" role="tab" aria-selected="false">Metode</button>
+    <button data-tab="settings" id="tabbtn-settings" aria-controls="tab-settings" role="tab" aria-selected="false">Pengaturan</button>
   </nav>
 
   <!-- ============ TAB PERCAKAPAN ============ -->
-  <section class="panel show" id="tab-phrases">
+  <section class="panel show" id="tab-phrases" role="tabpanel" aria-labelledby="tabbtn-phrases">
     <div class="searchbox">
     <input id="search" type="text" placeholder="Cari… aksara, pinyin, atau artinya">
   </div>
@@ -48,14 +48,14 @@
   </section>
 
   <!-- ============ TAB DIALOG ============ -->
-  <section class="panel" id="tab-dialog">
+  <section class="panel" id="tab-dialog" role="tabpanel" aria-labelledby="tabbtn-dialog">
     <h2 class="sect">🗣️ Percakapan Utuh</h2>
   <p class="sub">Klik aksara di dalam gelembung untuk mendengarnya per kata (kata yang dibaca menyala). Klik area lain barisnya untuk mendengar kalimat penuh.</p>
   <div id="dialogList"></div>
   </section>
 
   <!-- ============ TAB TATA BAHASA (BARU) ============ -->
-  <section class="panel" id="tab-grammar">
+  <section class="panel" id="tab-grammar" role="tabpanel" aria-labelledby="tabbtn-grammar">
     
   <h2 class="sect">🧩 20 Tata Bahasa Inti HSK 1–4 (Grammar Hub)</h2>
   <p class="sub">Panduan tata bahasa terstruktur untuk perkuliahan dan percakapan nyata: kata bantu bilangan (量词), partikel aspek (了/过/着), struktur 把 &amp; 被, aneka komplemen (得/结果/方向/可能), perbandingan 比, ketiga De (的/地/得), dan konjungsi beserta latihan pemahaman interaktif.</p>
@@ -76,7 +76,7 @@
   </section>
 
   <!-- ============ TAB LATIHAN PRODUKTIF (BARU) ============ -->
-  <section class="panel" id="tab-practice">
+  <section class="panel" id="tab-practice" role="tabpanel" aria-labelledby="tabbtn-practice">
     
   <h2 class="sect">🏋️ Latihan Produktif (Active Production Hub)</h2>
   <p class="sub">Latih kemampuan aktif memproduksi bahasa: rangkai kata sesuai urutan tata bahasa (Susun Kalimat), uji ketepatan partikel (Isi Rumpang), dan latih telinga menangkap bunyi aksara (Dikte Audio).</p>
@@ -87,7 +87,7 @@
   </section>
 
   <!-- ============ TAB KUIS SRS ============ -->
-  <section class="panel" id="tab-quiz">
+  <section class="panel" id="tab-quiz" role="tabpanel" aria-labelledby="tabbtn-quiz">
     <h2 class="sect">🃏 Kuis — Spaced Repetition</h2>
   <p class="sub">Sesi maksimal 20 kartu: ulangan yang jatuh tempo lebih dulu, lalu maksimal 10 kartu baru. Setelah dinilai, kartu dijadwalkan ulang 1 → 3 → 7 → 16 → 35 → 60 hari. Nilai dengan jujur — itu yang membuat jadwalnya akurat.</p>
   <div class="quizcard" id="quizCard">
@@ -99,7 +99,7 @@
   </section>
 
   <!-- ============ TAB HSK · 1000 ============ -->
-  <section class="panel" id="tab-hsk">
+  <section class="panel" id="tab-hsk" role="tabpanel" aria-labelledby="tabbtn-hsk">
     <h2 class="sect">🎓 Latihan HSK</h2>
   <p class="sub">Kuis mendengar bergaya HSK 1–3: dengar kalimat, pilih artinya, lalu baca pembahasan. Sepuluh soal per sesi, diambil dari bank 1.000 kalimat di bawah. Ini pemanasan kosakata dan telinga, bukan mock test resmi.</p>
 
@@ -175,7 +175,7 @@
   </section>
 
   <!-- ============ TAB NADA & PINYIN ============ -->
-  <section class="panel" id="tab-tones">
+  <section class="panel" id="tab-tones" role="tabpanel" aria-labelledby="tabbtn-tones">
     <h2 class="sect">🎵 Kuasai 4 Nada — bagian terpenting!</h2>
   <p class="sub">"Mama" yang sama bisa punya 4 arti berbeda hanya karena nada. Warna nada dipakai di seluruh membaca web ini agar otakmu otomatis mengingat nada.</p>
 
@@ -224,7 +224,7 @@
   </section>
 
   <!-- ============ TAB METODE ============ -->
-  <section class="panel" id="tab-tips">
+  <section class="panel" id="tab-tips" role="tabpanel" aria-labelledby="tabbtn-tips">
     <h2 class="sect">📜 Metode Belajar di Web Ini</h2>
   <p class="sub">Dirangkum dari riset cara belajar Mandarin paling efektif (2024–2026). Ikuti ini, kamu belajar 3–5× lebih efisien daripada asal menghafal.</p>
 
@@ -254,7 +254,7 @@
   </section>
 
   <!-- ============ TAB PENGATURAN ============ -->
-  <section class="panel" id="tab-settings">
+  <section class="panel" id="tab-settings" role="tabpanel" aria-labelledby="tabbtn-settings">
     <h2 class="sect">⚙️ Pengaturan</h2>
   <p class="sub">Tersimpan otomatis di browser ini. Perubahan langsung berlaku di semua kartu.</p>
 
