@@ -1304,6 +1304,7 @@ function nextDictation(){
   dictationPool = [];
   dictationSelectedTokens = [];
   dictationChecked = false;
+  dictationSpokenItem = null;
   renderPracticeCurrentMode();
 }
 
