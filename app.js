@@ -5,6 +5,13 @@
    dan Latihan Produktif (Susun Kalimat, Isi Rumpang, Dikte).
    ============================================================ */
 
+/** Escape teks pengguna sebelum dimasukkan ke innerHTML. */
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[ch]));
+}
+
 const PY_SEG_CACHE = new Map();
 function splitPinyinRun(run){
   if(PY_SEG_CACHE.has(run)) return PY_SEG_CACHE.get(run);
@@ -289,7 +296,7 @@ function renderPhrases(){
   const list = phraseIdx();
   if(!list.length){
     const filters = [];
-    if(query) filters.push(`“${query}”`);
+    if(query) filters.push(`“${escapeHTML(query)}”`);
     if(curCat !== "all") filters.push("kategori ini");
     if(curLevel) filters.push(curLevel===3 ? "HSK 3+" : "HSK "+curLevel);
     el.innerHTML = `<div class="empty">Tidak ada kartu yang cocok${filters.length ? " untuk " + filters.join(" · ") : ""} 😢</div>`;
@@ -816,7 +823,7 @@ function renderGrammar(){
   });
 
   if(filtered.length === 0){
-    container.innerHTML = `<div class="card" style="text-align:center;padding:30px;color:var(--muted)">Tidak ada tata bahasa yang cocok dengan pencarian "<b>${q}</b>".</div>`;
+    container.innerHTML = `<div class="card" style="text-align:center;padding:30px;color:var(--muted)">Tidak ada tata bahasa yang cocok dengan pencarian "<b>${escapeHTML(q)}</b>".</div>`;
     return;
   }
 
