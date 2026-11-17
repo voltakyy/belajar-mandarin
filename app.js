@@ -983,11 +983,11 @@ function renderScrambleMode(container){
   }
 
   const slotChips = scrambleSelectedTokens.map((tObj, slotIdx) => `
-    <div class="word-chip in-slot" onclick="unpickScrambleToken(${slotIdx})">${tObj.text}</div>
+    <button type="button" class="word-chip in-slot" onclick="unpickScrambleToken(${slotIdx})">${tObj.text}</button>
   `).join('');
 
   const poolChips = scramblePool.map(tObj => `
-    <div class="word-chip ${tObj.used ? 'used' : ''}" onclick="pickScrambleToken(${tObj.id})">${tObj.text}</div>
+    <button type="button" class="word-chip ${tObj.used ? 'used' : ''}" onclick="pickScrambleToken(${tObj.id})">${tObj.text}</button>
   `).join('');
 
   container.innerHTML = `
@@ -1175,11 +1175,11 @@ function renderDictationMode(container){
   }
 
   const slotChips = dictationSelectedTokens.map((tObj, slotIdx) => `
-    <div class="word-chip in-slot" onclick="unpickDictationToken(${slotIdx})">${tObj.text}</div>
+    <button type="button" class="word-chip in-slot" onclick="unpickDictationToken(${slotIdx})">${tObj.text}</button>
   `).join('');
 
   const poolChips = dictationPool.map(tObj => `
-    <div class="word-chip ${tObj.used ? 'used' : ''}" onclick="pickDictationToken(${tObj.id})">${tObj.text}</div>
+    <button type="button" class="word-chip ${tObj.used ? 'used' : ''}" onclick="pickDictationToken(${tObj.id})">${tObj.text}</button>
   `).join('');
 
   container.innerHTML = `
