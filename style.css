@@ -883,4 +883,11 @@ summary:focus-visible,
   .practice-modes button{
     white-space:normal;font-size:12px;padding:10px 6px;line-height:1.35;
   }
+
+  /* Tabel lama tetap bisa dibaca dengan menggulir di dalam wadahnya. */
+  table.pinyin{min-width:100%;font-size:13px}
+  table.pinyin th,table.pinyin td{padding:7px 8px}
+  /* Kolom pertama tidak perlu nowrap di layar sempit; membiarkannya
+     membungkus membuat ketiga kolom muat tanpa gulir samping. */
+  table.pinyin td:first-child{white-space:normal}
 }
