@@ -828,3 +828,29 @@ body.hanzi-large .inline-zh{font-size:1em;line-height:inherit}
 .hanzi-speak:hover{
   color:var(--warm);transform:scale(1.1);
 }
+
+/* ============================================================
+   AKSESIBILITAS & LAYAR KECIL
+   ============================================================ */
+
+/* Fokus keyboard harus selalu terlihat, terpisah dari efek hover. */
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+[role="tab"]:focus-visible{
+  outline:2px solid var(--warm);
+  outline-offset:3px;
+  border-radius:2px;
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+  .word-chip:hover,
+  .hanzi-speak:hover,
+  .zh .hz-char:hover{transform:none}
+}
