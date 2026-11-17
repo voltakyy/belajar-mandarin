@@ -922,6 +922,8 @@ let dictationIndex = 0;
 let dictationSelectedTokens = [];
 let dictationPool = [];
 let dictationChecked = false;
+let dictationSpokenItem = null;
+let dictationTimer = null;
 
 function initPracticeHub(){
   const tab = document.getElementById('tab-practice');
@@ -934,14 +936,18 @@ function renderPracticeHeader(){
   const container = document.getElementById('practiceModes');
   if(!container) return;
   container.innerHTML = `
-    <button class="${currentPracticeMode==='scramble'?'active':''}" onclick="setPracticeMode('scramble')">🧩 Susun Kalimat</button>
-    <button class="${currentPracticeMode==='cloze'?'active':''}" onclick="setPracticeMode('cloze')">✏️ Isi Rumpang</button>
-    <button class="${currentPracticeMode==='dictation'?'active':''}" onclick="setPracticeMode('dictation')">🎧 Dikte Audio</button>
+    <button aria-pressed="${currentPracticeMode==='scramble'}" class="${currentPracticeMode==='scramble'?'active':''}" onclick="setPracticeMode('scramble')">🧩 Susun Kalimat</button>
+    <button aria-pressed="${currentPracticeMode==='cloze'}" class="${currentPracticeMode==='cloze'?'active':''}" onclick="setPracticeMode('cloze')">✏️ Isi Rumpang</button>
+    <button aria-pressed="${currentPracticeMode==='dictation'}" class="${currentPracticeMode==='dictation'?'active':''}" onclick="setPracticeMode('dictation')">🎧 Dikte Audio</button>
   `;
 }
 
 function setPracticeMode(mode){
   currentPracticeMode = mode;
+  if(dictationTimer){ clearTimeout(dictationTimer); dictationTimer = null; }
+  // Masuk mode dikte = boleh autoplay sekali; render ulang karena klik
+  // kepingan kata tidak boleh memutar ulang kalimat.
+  if(mode === 'dictation') dictationSpokenItem = null;
   renderPracticeHeader();
   renderPracticeCurrentMode();
   try{ speechSynthesis.cancel(); }catch(e){}
@@ -1201,12 +1207,24 @@ function renderDictationMode(container){
         <button class="practice-btn primary" onclick="checkDictation()">✅ Periksa Dikte</button>
       </div>
 
-      <div class="practice-feedback" id="dictationFeedback"></div>
+      <div class="practice-feedback" id="dictationFeedback" aria-live="polite"></div>
     </div>
   `;
 
-  // Autoplay voice
-  setTimeout(() => speakDictation(1.0), 350);
+  // Autoplay hanya sekali per soal. Dulu blok ini ikut jalan setiap kali
+  // kepingan kata diklik (karena render ulang), sehingga audio terus
+  // terpotong dan diputar dari awal.
+  if(dictationSpokenItem !== item.id){
+    dictationSpokenItem = item.id;
+    if(dictationTimer) clearTimeout(dictationTimer);
+    dictationTimer = setTimeout(() => {
+      dictationTimer = null;
+      const panel = document.getElementById('tab-practice');
+      if(currentPracticeMode === 'dictation' && panel && panel.classList.contains('show')){
+        speakDictation(1.0);
+      }
+    }, 350);
+  }
 }
 
 function speakDictation(rateMult){
